@@ -1,5 +1,6 @@
 package br.univali.kob.model;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 /** Representa controle de escrita e leitura no console.
@@ -27,7 +28,7 @@ public final class Console {
      * @param caption Texto que identifica o que está sendo solicitado (rótulo)
      * @return um caracter com a linha lida
      */
-    private static Character readCharacter(Character caption) {
+    public static Character readCharacter(String caption) {
         System.out.printf("%s ", caption);
         return in.next().charAt(0);
     }
@@ -46,7 +47,7 @@ public final class Console {
      * Aguarda até que um ENTER seja teclado no console.
      */
     public static void waitEnter() {
-        readLine("\n\n pressione [ENTER] para continuar\n");
+        readLine("\n\npressione [ENTER] para continuar\n");
     }
 
     /**
@@ -56,6 +57,29 @@ public final class Console {
      * @return true se a resposta for sim, false caso contrário
      */
     public static boolean ask(String question) {
-        return readlnString("\n" + question + " ").toLowerCase().equals("s");
+        return readlnString("\n" + question + "\n").toLowerCase().equals("s");
+    }
+
+    /**
+     * Faz uma pergunta tipo s/n e retorna a resposta.
+     *
+     * @param question o texto com a pergunta a ser feita
+     * @return true se a resposta for sim, false caso contrário
+     */
+    public static boolean askChar(String question) {
+        return String.valueOf(readCharacter("\n" + question + "\n")).toLowerCase().equals("s");
+    }
+
+    /**
+     * Limpa o console da aplicacacao
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public static void clear() throws IOException, InterruptedException {
+        if (System.getProperty("os.name").contains("Windows")) {
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+        } else {
+            Runtime.getRuntime().exec("clear");
+        }
     }
 }

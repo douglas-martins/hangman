@@ -1,19 +1,24 @@
 package br.univali.kob.model;
 
 public enum HangmanDraw {
-    GALLOWS(drawGallows()),
-    HEAD(drawHead()),
-    BODY(drawBody()),
-    LEFT_ARM(drawLeftArm()),
-    RIGHT_ARM(drawRightArm()),
-    LEFT_LEG(drawLeftLeg()),
-    RIGHT_LEG(drawRightLeg());
+    GALLOWS(PlayerGuessState.ON_HEAD, drawGallows()),
+    HEAD(PlayerGuessState.ON_BODY, drawHead()),
+    BODY(PlayerGuessState.ON_LEFT_ARM, drawBody()),
+    LEFT_ARM(PlayerGuessState.ON_ARMS, drawLeftArm()),
+    ARMS(PlayerGuessState.ON_ARMS, drawRightArm()),
+    LEFT_LEG(PlayerGuessState.ON_LEFT_LEG, drawLeftLeg()),
+    LEGS(PlayerGuessState.ON_LEGS, drawRightLeg());
+
+    private final PlayerGuessState state;
 
     private final String draw;
 
-    HangmanDraw(String draw) {
+    HangmanDraw(PlayerGuessState state, String draw) {
+        this.state = state;
         this.draw = draw;
     }
+
+    public PlayerGuessState getState() { return this.state; }
 
     public String getDraw() { return this.draw; }
 

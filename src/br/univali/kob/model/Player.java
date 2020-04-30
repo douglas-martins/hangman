@@ -4,16 +4,16 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Player {
-    private List<Character> wrongGuessed;
+    private final List<Character> wrongGuessed;
 
-    private List<Character> rightGuessed;
+    private final List<Character> rightGuessed;
 
     private Game game;
 
     public Player(Game game) {
         this.wrongGuessed = new ArrayList<>();
         this.rightGuessed = new ArrayList<>();
-        this.game = game;
+        this.addGame(game);
     }
 
     public List<Character> getGuessedCharacter() {
@@ -28,11 +28,18 @@ public class Player {
     }
 
     public List<Character> getRightGuessed() {
-        return wrongGuessed;
+        return rightGuessed;
     }
 
     public Game getGame() {
         return game;
+    }
+
+    public void addGame(Game game) {
+        if (this.game == null) {
+            this.game = game;
+            game.addPlayer(this);
+        }
     }
 
     public void addGuessedWord(Character character, Boolean isWrong) {
