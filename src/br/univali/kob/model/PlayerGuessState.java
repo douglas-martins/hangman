@@ -44,7 +44,7 @@ public enum PlayerGuessState {
         }
     };
 
-    private Integer value;
+    private final Integer value;
 
     PlayerGuessState(Integer value) {
         this.value = value;

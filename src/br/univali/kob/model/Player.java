@@ -2,6 +2,7 @@ package br.univali.kob.model;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Player {
     private final List<Character> wrongGuessed;
@@ -48,5 +49,29 @@ public class Player {
         } else {
             this.rightGuessed.add(character);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return Objects.equals(wrongGuessed, player.wrongGuessed) &&
+                Objects.equals(rightGuessed, player.rightGuessed) &&
+                Objects.equals(game, player.game);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(wrongGuessed, rightGuessed, game);
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "wrongGuessed=" + wrongGuessed +
+                ", rightGuessed=" + rightGuessed +
+                ", game=" + game +
+                '}';
     }
 }

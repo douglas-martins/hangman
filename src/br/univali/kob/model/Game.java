@@ -3,6 +3,7 @@ package br.univali.kob.model;
 import java.io.IOException;
 import java.text.Collator;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Random;
 
 public class Game {
@@ -176,5 +177,43 @@ public class Game {
             this.gameState = GameState.GAME_PLAYER_WIN;
             this.wins++;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Game game = (Game) o;
+        return Objects.equals(gameScreen, game.gameScreen) &&
+                Objects.equals(player, game.player) &&
+                gameState == game.gameState &&
+                Objects.equals(word, game.word) &&
+                Objects.equals(words, game.words) &&
+                Objects.equals(random, game.random) &&
+                playerGuessState == game.playerGuessState &&
+                Objects.equals(wins, game.wins) &&
+                Objects.equals(loses, game.loses) &&
+                Objects.equals(charsRightCount, game.charsRightCount);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(gameScreen, player, gameState, word, words, random, playerGuessState, wins, loses, charsRightCount);
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "gameScreen=" + gameScreen +
+                ", player=" + player +
+                ", gameState=" + gameState +
+                ", word='" + word + '\'' +
+                ", words=" + words +
+                ", random=" + random +
+                ", playerGuessState=" + playerGuessState +
+                ", wins=" + wins +
+                ", loses=" + loses +
+                ", charsRightCount=" + charsRightCount +
+                '}';
     }
 }
