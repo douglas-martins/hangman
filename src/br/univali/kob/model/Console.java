@@ -47,7 +47,7 @@ public final class Console {
      * Aguarda até que um ENTER seja teclado no console.
      */
     public static void waitEnter() {
-        readLine("\n\npressione [ENTER] para continuar\n");
+        readLine("\n\n                      pressione [ENTER] para jogar\n");
     }
 
     /**

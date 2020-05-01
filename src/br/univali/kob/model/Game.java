@@ -86,11 +86,18 @@ public class Game {
         this.gameLoop();
     }
 
+    public Boolean compareChars(Character first, Character second) {
+        Collator collator = Collator.getInstance(new Locale("pt", "BR"));
+        collator.setStrength(Collator.PRIMARY);
+        return collator.compare(String.valueOf(first), String.valueOf(second)) == 0;
+    }
+
     private void gameLoop() throws IOException, InterruptedException {
         this.gameState = GameState.GAME_LOOP;
+        String lastGuessedResult = "";
         while (this.gameState == GameState.GAME_LOOP) {
-            this.gameScreen.drawGameScreen();
-            this.playerGuess();
+            this.gameScreen.drawGameScreen(lastGuessedResult);
+            lastGuessedResult = this.playerGuess();
             this.changeGameStateOnLoop();
         }
         this.gameOver();
@@ -120,12 +127,13 @@ public class Game {
         this.gameScreen.drawGameExitScreen();
     }
 
-    private void playerGuess() {
+    private String playerGuess() {
         Character nextGuess = this.guessNewCharLoop();
+        String result = "Muito bom! Voce acertou a letra " + String.valueOf(nextGuess);
         Boolean isWrong = true;
 
         for (Character character : this.word.toLowerCase().toCharArray()) {
-            if (character.equals(nextGuess)) {
+            if (this.compareChars(character, nextGuess)) {
                 isWrong = false;
                 this.charsRightCount++;
             }
@@ -133,9 +141,11 @@ public class Game {
 
         if (isWrong) {
             this.playerGuessState = this.playerGuessState.nextState();
+            result = "Que pena! A letra " + String.valueOf(nextGuess) + " nao existe nesta palavra";
         }
 
         this.player.addGuessedWord(nextGuess, isWrong);
+        return result;
     }
 
     private Character guessNewCharLoop() {
@@ -151,11 +161,9 @@ public class Game {
 
     private Boolean isPlayerAlreadyTry(Character character) {
         if (this.player.getGuessedCharacter().size() <= 0) { return false; }
-        Collator collator = Collator.getInstance(new Locale("pt", "BR"));
-        collator.setStrength(Collator.PRIMARY);
         return this.player.getGuessedCharacter()
                 .stream()
-                .anyMatch(character1 -> collator.compare(String.valueOf(character), String.valueOf(character1)) == 0);
+                .anyMatch(character1 -> this.compareChars(character, character1));
     }
 
     private void changeGameStateOnLoop() {
@@ -169,18 +177,4 @@ public class Game {
             this.wins++;
         }
     }
-
-//    private Integer getPlayerRightGuessedCount() {
-//        Integer count = 0;
-//        Collator collator = Collator.getInstance(new Locale("pt", "BR"));
-//        collator.setStrength(Collator.PRIMARY);
-//        for (Character character : this.word.toCharArray()) {
-//            for (Character guessed : this.player.getRightGuessed()) {
-//                if (collator.compare(String.valueOf(character), String.valueOf(guessed)) == 0) {
-//                    count++;
-//                }
-//            }
-//        }
-//        return count;
-//    }
 }

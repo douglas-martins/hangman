@@ -1,8 +1,6 @@
 package br.univali.kob.model;
 
 import java.io.IOException;
-import java.text.Collator;
-import java.util.Locale;
 
 public class GameScreen {
     private Game game;
@@ -23,20 +21,27 @@ public class GameScreen {
 
     public void drawGameStart() throws IOException, InterruptedException {
         this.clearScreen();
-        System.out.println("Bem vindo ao Jogo da Forca!");
+        System.out.println("###############################################################################");
+        System.out.println("######################### Bem vindo ao Jogo da Forca! #########################");
+        System.out.println("###############################################################################");
         Console.waitEnter();
     }
 
-    public void drawGameScreen() throws IOException, InterruptedException {
+    public void drawGameScreen(String lastGuessedResult) throws IOException, InterruptedException {
         this.clearScreen();
         this.drawHangman();
+        this.drawLastGuessResult(lastGuessedResult);
         this.drawWord();
         this.drawGuessedCharacters();
     }
 
     public void drawGameOverScreen() throws IOException, InterruptedException {
         this.clearScreen();
-        System.out.println("Game Over!");
+        System.out.println();
+        System.out.println("##############################################################");
+        System.out.println("######################### Game Over! #########################");
+        System.out.println("##############################################################");
+        System.out.println();
         this.drawHangman();
         System.out.println();
 
@@ -52,9 +57,12 @@ public class GameScreen {
 
     public void drawGameExitScreen() throws IOException, InterruptedException {
         this.clearScreen();
-        System.out.println("Obrigado por jogar!");
-        System.out.println("Voce acertou um total de " + this.game.getWins());
-        System.out.println("Voce errou um total de " + this.game.getLoses());
+        System.out.println("########################################################################");
+        System.out.println("######################### Obrigado por jogar! ##########################");
+        System.out.println("########################################################################");
+        System.out.println();
+        System.out.println("                  Voce acertou um total de " + this.game.getWins() + " palavras");
+        System.out.println("                  Voce errou um total de " + this.game.getLoses() + " palavras");
     }
 
     public Character drawNextCharacterQuestion() {
@@ -97,12 +105,17 @@ public class GameScreen {
         System.out.println(this.hangmanDraw.getDraw());
     }
 
+    private void drawLastGuessResult(String lastGuessedResult) {
+        if (!lastGuessedResult.isEmpty()) {
+            System.out.println(lastGuessedResult);
+        }
+        System.out.println();
+    }
+
     private void drawWord() {
         for (Character character : this.game.getWord().toCharArray()) {
-            Collator collator = Collator.getInstance(new Locale("pt", "BR"));
-            collator.setStrength(Collator.PRIMARY);
             Boolean hasWord = this.game.getPlayer().getGuessedCharacter().stream()
-                    .anyMatch(character1 -> collator.compare(String.valueOf(character), String.valueOf(character1)) == 0);
+                    .anyMatch(character1 -> this.game.compareChars(character, character1));
 
             if (hasWord) {
                 System.out.print(character);
