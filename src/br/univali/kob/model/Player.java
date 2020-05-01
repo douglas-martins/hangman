@@ -9,12 +9,9 @@ public class Player {
 
     private final List<Character> rightGuessed;
 
-    private Game game;
-
-    public Player(Game game) {
+    public Player() {
         this.wrongGuessed = new ArrayList<>();
         this.rightGuessed = new ArrayList<>();
-        this.addGame(game);
     }
 
     public List<Character> getGuessedCharacter() {
@@ -32,17 +29,6 @@ public class Player {
         return rightGuessed;
     }
 
-    public Game getGame() {
-        return game;
-    }
-
-    public void addGame(Game game) {
-        if (this.game == null) {
-            this.game = game;
-            game.addPlayer(this);
-        }
-    }
-
     public void addGuessedWord(Character character, Boolean isWrong) {
         if (isWrong) {
             this.wrongGuessed.add(character);
@@ -57,13 +43,12 @@ public class Player {
         if (o == null || getClass() != o.getClass()) return false;
         Player player = (Player) o;
         return Objects.equals(wrongGuessed, player.wrongGuessed) &&
-                Objects.equals(rightGuessed, player.rightGuessed) &&
-                Objects.equals(game, player.game);
+                Objects.equals(rightGuessed, player.rightGuessed);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(wrongGuessed, rightGuessed, game);
+        return Objects.hash(wrongGuessed, rightGuessed);
     }
 
     @Override
@@ -71,7 +56,6 @@ public class Player {
         return "Player{" +
                 "wrongGuessed=" + wrongGuessed +
                 ", rightGuessed=" + rightGuessed +
-                ", game=" + game +
                 '}';
     }
 }

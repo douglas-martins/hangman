@@ -16,7 +16,6 @@ public class GameScreen {
     public void addGame(Game game) {
         if (this.game == null) {
             this.game = game;
-            game.addGameScreen(this);
         }
     }
 

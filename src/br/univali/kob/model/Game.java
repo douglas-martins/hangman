@@ -38,6 +38,8 @@ public class Game {
 
         this.words = new Words();
         this.random = new Random();
+        this.player = new Player();
+        this.gameScreen = new GameScreen(this);
     }
 
     public GameScreen getGameScreen() {
@@ -66,20 +68,6 @@ public class Game {
 
     public Integer getLoses() { return loses; }
 
-    public void addPlayer(Player player) {
-        if (this.player == null) {
-            this.player = player;
-            this.player.addGame(this);
-        }
-    }
-
-    public void addGameScreen(GameScreen gameScreen) {
-        if (this.gameScreen == null) {
-            this.gameScreen = gameScreen;
-            gameScreen.addGame(this);
-        }
-    }
-
     public void gameStart() throws IOException, InterruptedException {
         this.gameState = GameState.GAME_START;
         this.word = this.words.getPossibilities().get(this.random.nextInt(this.words.getPossibilities().size()));
@@ -106,10 +94,10 @@ public class Game {
 
     private void gameRestart() throws IOException, InterruptedException {
         this.gameState = GameState.GAME_RESTART;
+        this.playerGuessState = PlayerGuessState.ON_GALLOWS;
         this.charsRightCount = 0;
         this.player.getRightGuessed().clear();
         this.player.getWrongGuessed().clear();
-        this.playerGuessState = PlayerGuessState.ON_GALLOWS;
         this.gameStart();
     }
 
@@ -150,9 +138,9 @@ public class Game {
     }
 
     private Character guessNewCharLoop() {
-        Character nextGuess = '-';
+        Character nextGuess = '`';
         do {
-            if (!nextGuess.equals('-')) {
+            if (!nextGuess.equals('`')) {
                 System.out.println("Erro! Voce ja tentou esta letra, tente outra...");
             }
             nextGuess = Character.toLowerCase(this.gameScreen.drawNextCharacterQuestion());
