@@ -28,8 +28,6 @@ public class Game {
     private Integer charsRightCount;
 
     public Game() {
-        this.gameScreen = null;
-        this.player = null;
         this.wins = 0;
         this.loses = 0;
         this.charsRightCount = 0;
@@ -140,11 +138,16 @@ public class Game {
     private Character guessNewCharLoop() {
         Character nextGuess = '`';
         do {
-            if (!nextGuess.equals('`')) {
+            if (!nextGuess.equals('`') && Character.isLetter(nextGuess)) {
                 System.out.println("Erro! Voce ja tentou esta letra, tente outra...");
             }
+
+            if (!nextGuess.equals('`') && !Character.isLetter(nextGuess)) {
+                System.out.println("Erro! Voce digitou um valor invalido");
+            }
+
             nextGuess = Character.toLowerCase(this.gameScreen.drawNextCharacterQuestion());
-        } while (this.isPlayerAlreadyTry(nextGuess));
+        } while (this.isPlayerAlreadyTry(nextGuess) || !Character.isLetter(nextGuess));
         return nextGuess;
     }
 
